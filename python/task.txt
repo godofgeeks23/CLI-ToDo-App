@@ -1,6 +1,2 @@
 0 buy milk
-1 go to market
-2 go to work
-3 go to bed
-4 go to cinema
-5 go to the gym
+5 listen to songs

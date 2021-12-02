@@ -1,9 +1,20 @@
 import sys
 
-file1 = open('task.txt', 'r')
-tasks = file1.readlines()
-for task in tasks:
-    print(task)
+priority_list = []
+task_list = []
+completed_list = []
+
+taskfile = open('task.txt', 'r')
+for task in taskfile.readlines():
+    priority = ([int(p) for p in task.split() if p.isdigit()][0])
+    task_list.append(' '.join(task.split()[1:]))
+    priority_list.append(priority)
+taskfile.close()
+
+completed_file = open('completed.txt', 'r')
+for comp_task in completed_file.readlines():
+    completed_list.append(comp_task)
+completed_file.close()
 
 def show_help():
   print("""Usage :-
@@ -15,19 +26,65 @@ def show_help():
     $ ./task report               # Statistics""")
 
 def add_task(priority, text):
-  print("Adding task : {} {}".format(priority, text))
+    priority = int(priority)
+    i = 0
+    for i in range(len(priority_list)):
+        if(priority_list[i] > priority):
+            priority_list.insert(i, priority)
+            task_list.insert(i, text)
+            break
+    if(i == len(priority_list)-1):
+        priority_list.append(priority)
+        task_list.append(text)
+    taskfile = open('task.txt', 'w')
+    for i in range(len(priority_list)):
+        taskfile.write("{} {}\n".format(priority_list[i], task_list[i]))
+    taskfile.close()
+    print('Added task: "{}" with priority {}'.format(text, priority))
 
 def list_tasks():
-  print("Listing tasks")
+    for i in range(len(priority_list)):
+        print("{}. {} [{}]".format(i+1, task_list[i], priority_list[i]))
 
 def del_task(index):
-  print("Removing task")
+    index = int(index)
+    try:
+        task_list.pop(index-1)
+        priority_list.pop(index-1)
+        taskfile = open('task.txt', 'w')
+        for i in range(len(priority_list)):
+            taskfile.write("{} {}\n".format(priority_list[i], task_list[i]))
+        taskfile.close()
+        print("Deleted item with index {}".format(index))
+    except IndexError:
+        print("Error: item with index {} does not exist. Nothing deleted.".format(index))
 
 def done_task(index):
-  print("Completed task")
+    try:
+        index = int(index)
+        completed_list.append(task_list[index-1])
+        print("completed_list: {}".format(completed_list))
+        completed_file = open('completed.txt', 'w')
+        for i in range(len(completed_list)):
+            completed_file.write("{}\n".format(completed_list[i]))
+        completed_file.close()
+        del task_list[(index-1)]
+        del priority_list[(index-1)]
+        taskfile = open('task.txt', 'w')
+        for i in range(len(priority_list)):
+            taskfile.write("{} {}\n".format(priority_list[i], task_list[i]))
+        taskfile.close()
+        print("Marked item as done.")
+    except IndexError:
+        print("Error: no incomplete item with index {} exists.".format(index))
 
 def report():
-  print("Generating report")
+    print("Pending: {}".format(len(priority_list)))
+    for i in range(len(priority_list)):
+        print("{}. {} [{}]".format(i+1, task_list[i], priority_list[i]))
+    print("\nCompleted: {}".format(len(completed_list)))
+    for i in range(len(completed_list)):
+        print("{}. {}".format(i+1, completed_list[i]))
 
 try:
     if(sys.argv[1]=='add'):
@@ -42,7 +99,7 @@ try:
         report()
     else:
         show_help()
-except:
-  show_help()
+except IndexError:
+    show_help()
 
 
