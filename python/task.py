@@ -13,7 +13,7 @@ taskfile.close()
 
 completed_file = open('completed.txt', 'r')
 for comp_task in completed_file.readlines():
-    completed_list.append(comp_task)
+    completed_list.append(comp_task.rstrip())
 completed_file.close()
 
 def show_help():
@@ -62,12 +62,9 @@ def del_task(index):
 def done_task(index):
     try:
         index = int(index)
-        completed_list.append(task_list[index-1])
-        print("completed_list: {}".format(completed_list))
-        completed_file = open('completed.txt', 'w')
-        for i in range(len(completed_list)):
-            completed_file.write("{}\n".format(completed_list[i]))
-        completed_file.close()
+        file1 = open("completed.txt", "a")
+        file1.write("{}\n".format(task_list[index-1]))
+        file1.close()
         del task_list[(index-1)]
         del priority_list[(index-1)]
         taskfile = open('task.txt', 'w')
