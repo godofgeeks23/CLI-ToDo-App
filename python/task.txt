@@ -1,3 +1,2 @@
-0 buy coffee
-2 task 2
-2 task 2b
+0 most important
+4 not very important

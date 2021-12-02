@@ -33,7 +33,7 @@ def add_task(priority, text):
             priority_list.insert(i, priority)
             task_list.insert(i, text)
             break
-    if(i == len(priority_list)-1):
+    if(i == len(priority_list)-1 or i == 0):
         priority_list.append(priority)
         task_list.append(text)
     taskfile = open('task.txt', 'w')
