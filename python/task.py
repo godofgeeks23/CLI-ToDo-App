@@ -4,17 +4,25 @@ priority_list = []
 task_list = []
 completed_list = []
 
-taskfile = open('task.txt', 'r')
-for task in taskfile.readlines():
-    priority = ([int(p) for p in task.split() if p.isdigit()][0])
-    task_list.append(' '.join(task.split()[1:]))
-    priority_list.append(priority)
-taskfile.close()
+try:
+    taskfile = open('task.txt', 'r+')
+    for task in taskfile.readlines():
+        priority = ([int(p) for p in task.split() if p.isdigit()][0])
+        task_list.append(' '.join(task.split()[1:]))
+        priority_list.append(priority)
+    taskfile.close()
+except FileNotFoundError:
+    taskfile = open('task.txt', 'w+')
+    taskfile.close()
 
-completed_file = open('completed.txt', 'r')
-for comp_task in completed_file.readlines():
-    completed_list.append(comp_task.rstrip())
-completed_file.close()
+try:
+    completed_file = open('completed.txt', 'r+')
+    for comp_task in completed_file.readlines():
+        completed_list.append(comp_task.rstrip())
+    completed_file.close()
+except FileNotFoundError:
+    completed_file = open('completed.txt', 'w+')
+    completed_file.close()
 
 def show_help():
   print("""Usage :-
