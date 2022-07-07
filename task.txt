@@ -1,0 +1,6 @@
+1 sleep 8 hrs
+2 eat khana
+2 drink pani
+1 sleep 8 hrs
+6 talk to avi
+7 return money to avi
