@@ -8,8 +8,8 @@ try:
     taskfile = open('task.txt', 'r+')
     for task in taskfile.readlines():
         priority = ([int(p) for p in task.split() if p.isdigit()][0])
-        task_list.append(' '.join(task.split()[1:]))
         priority_list.append(priority)
+        task_list.append(' '.join(task.split()[1:]))
     taskfile.close()
 except FileNotFoundError:
     taskfile = open('task.txt', 'w+')
